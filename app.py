@@ -25,14 +25,14 @@ def decision(probability):
 # Variables
 turncount = 10
 # Defenses
-firewall = [0.2, 0.3, 0.4, 0.5]
-dmzfirewall = [0.2, 0.3, 0.4, 0.5]
+firewall = [0.2, 0.4, 0.5, 0.6]
+dmzfirewall = [0.1, 0.2, 0.3, 0.4]
 updates = 0.3
-passwordreq = 0.1
-ids = 0.1
-ips = 0.2
-serverpatch = 0.1
-usertraining = 0.1
+passwordreq = 0.3
+ids = 0.2
+ips = 0.3
+serverpatch = 0.3
+usertraining = 0.3
 # One time get out of jail for server\
 clients = [0.2, 0.2, 0.2]
 # Net seqmentation can only go to one client
@@ -40,7 +40,7 @@ netsegmentation = ""  # Example: netsegmentation = 'A' for client A
 orderOfClientAttack = [1, 2, 3]
 
 max_budget = 0
-testCount = 100
+testCount = 200
 budget = 50
 header = [['DMZ Firewall', 'Firewall', 'Passwords', 'Updates', 'ServerPatch', 'UserTraining', 'HoneyPot', 'Ids', 'Ips',
            'totalCount', 'WinRatio']]
@@ -78,18 +78,18 @@ for q in range(4):  # ------------------------------# DMZ firewall      $0, $2, 
                                 if moneySpent < budget:
                                     if i == 0:
                                         total = q + w + e + r + t + y + u
-                                        myList.append([q, w, e, r, t, y, u, 0, 0])
+                                        myList.append([q, w, e, r, t, y, u, 0, 0, total])
                                         listState.append(State(q, w, e, r, t, y, u, 0,
                                                                0))
 
                                     if i == 1:
                                         total = q + w + e + r + t + y + u + 1
-                                        myList.append([q, w, e, r, t, y, u, 1, 0])
+                                        myList.append([q, w, e, r, t, y, u, 1, 0, total])
                                         listState.append(State(q, w, e, r, t, y, u, 1,
                                                                0))
                                     if i == 2:
                                         total = q + w + e + r + t + y + u + 2
-                                        myList.append([q, w, e, r, t, y, u, 0, 1])
+                                        myList.append([q, w, e, r, t, y, u, 0, 1, total])
                                         listState.append(State(q, w, e, r, t, y, u, 0,
                                                                1))
 
