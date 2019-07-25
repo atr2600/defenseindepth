@@ -209,7 +209,7 @@ print(win)
 # else:
 #     print("LOST")
 
-f = open("data.txt", "w")
-for info in data:
-    f.write(str(info) + '\n')
-f.close()
+# f = open("data.txt", "w")
+# for info in data:
+#     f.write(str(info) + '\n')
+# f.close()
