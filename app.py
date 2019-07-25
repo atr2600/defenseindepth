@@ -23,16 +23,16 @@ def decision(probability):
 
 
 # Variables
-turncount = 10
+turncount = 8
 # Defenses
-firewall = [0.2, 0.4, 0.5, 0.6]
-dmzfirewall = [0.1, 0.2, 0.3, 0.4]
-updates = 0.3
-passwordreq = 0.3
+firewall = [0.0, 0.3, 0.4, 0.5]
+dmzfirewall = [0.0, 0.2, 0.3, 0.4]
+updates = 0.25
+passwordreq = 0.25
 ids = 0.2
 ips = 0.3
 serverpatch = 0.3
-usertraining = 0.3
+usertraining = 0.25
 # One time get out of jail for server\
 clients = [0.2, 0.2, 0.2]
 # Net seqmentation can only go to one client
@@ -41,13 +41,13 @@ orderOfClientAttack = [1, 2, 3]
 
 max_budget = 0
 testCount = 200
-budget = 50
+budget = 42
 header = [['DMZ Firewall', 'Firewall', 'Passwords', 'Updates', 'ServerPatch', 'UserTraining', 'HoneyPot', 'Ids', 'Ips',
            'totalCount', 'WinRatio']]
 myList = []
 listState = []
-for q in range(4):  # ------------------------------# DMZ firewall      $0, $2, $4, $8
-    for w in range(4):  # --------------------------# Firewall          $0, $2, $4, $8
+for q in range(4):  # ------------------------------# DMZ firewall      $0, $8, $16, $32
+    for w in range(4):  # --------------------------# Firewall          $0, $8, $16, $32
         for e in range(2):  # ----------------------# passwords         $2
             for r in range(2):  # ------------------# updates           $2
                 for t in range(2):  # --------------# serverpatch       $6
@@ -56,9 +56,9 @@ for q in range(4):  # ------------------------------# DMZ firewall      $0, $2, 
                             for i in range(3):  # -# ids               $8, $12
                                 moneySpent = 0
                                 if q != 0:
-                                    moneySpent += (2 ** q)  # This is 2 to the power of q, giving us 2,4,8.
+                                    moneySpent += (2 ** q)*3  # This is 2 to the power of q, giving us 2,4,8.
                                 if w != 0:
-                                    moneySpent += (2 ** w)  # This is 2 to the power of w, giving us 2,4,8.
+                                    moneySpent += (2 ** w)*3 # This is 2 to the power of w, giving us 2,4,8.
                                 if e == 1:
                                     moneySpent += 2
                                 if r == 1:
