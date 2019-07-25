@@ -2,6 +2,9 @@
 import random
 from dataclasses import dataclass
 
+import csv
+
+
 @dataclass
 class State:
     dmzfirewall: int = 0
@@ -15,9 +18,9 @@ class State:
     ids: bool = False
 
 
-
 def decision(probability):
     return not (random.random() < probability)
+
 
 # Variables
 turncount = 10
@@ -33,27 +36,29 @@ usertraining = 0.1
 # One time get out of jail for server\
 clients = [0.2, 0.2, 0.2]
 # Net seqmentation can only go to one client
-netsegmentation = "" # Example: netsegmentation = 'A' for client A
+netsegmentation = ""  # Example: netsegmentation = 'A' for client A
 orderOfClientAttack = [1, 2, 3]
 
 max_budget = 0
 testCount = 100
 budget = 50
-
+header = [['DMZ Firewall', 'Firewall', 'Passwords', 'Updates', 'ServerPatch', 'UserTraining', 'HoneyPot', 'Ids', 'Ips',
+           'totalCount', 'WinRatio']]
+myList = []
 listState = []
 for q in range(4):  # ------------------------------# DMZ firewall      $0, $2, $4, $8
     for w in range(4):  # --------------------------# Firewall          $0, $2, $4, $8
         for e in range(2):  # ----------------------# passwords         $2
             for r in range(2):  # ------------------# updates           $2
                 for t in range(2):  # --------------# serverpatch       $6
-                    for y in range(2):   # ---------# usertraining      $4 per
+                    for y in range(2):  # ---------# usertraining      $4 per
                         for u in range(2):  # ------# honeypot          $10
-                            for i in range(3):   # -# ids               $8, $12
+                            for i in range(3):  # -# ids               $8, $12
                                 moneySpent = 0
                                 if q != 0:
-                                    moneySpent += (2**q)   # This is 2 to the power of q, giving us 2,4,8.
+                                    moneySpent += (2 ** q)  # This is 2 to the power of q, giving us 2,4,8.
                                 if w != 0:
-                                    moneySpent += (2**w)   # This is 2 to the power of w, giving us 2,4,8.
+                                    moneySpent += (2 ** w)  # This is 2 to the power of w, giving us 2,4,8.
                                 if e == 1:
                                     moneySpent += 2
                                 if r == 1:
@@ -72,15 +77,21 @@ for q in range(4):  # ------------------------------# DMZ firewall      $0, $2, 
                                     max_budget = moneySpent
                                 if moneySpent < budget:
                                     if i == 0:
-                                        listState.append(State(q, w, bool(e), bool(r), bool(t), bool(y), bool(u), False,
-                                                               False))
+                                        total = q + w + e + r + t + y + u
+                                        myList.append([q, w, e, r, t, y, u, 0, 0])
+                                        listState.append(State(q, w, e, r, t, y, u, 0,
+                                                               0))
 
                                     if i == 1:
-                                        listState.append(State(q, w, bool(e), bool(r), bool(t), bool(y), bool(u), True,
-                                                               False))
+                                        total = q + w + e + r + t + y + u + 1
+                                        myList.append([q, w, e, r, t, y, u, 1, 0])
+                                        listState.append(State(q, w, e, r, t, y, u, 1,
+                                                               0))
                                     if i == 2:
-                                        listState.append(State(q, w, bool(e), bool(r), bool(t), bool(y), bool(u), False,
-                                                               True))
+                                        total = q + w + e + r + t + y + u + 2
+                                        myList.append([q, w, e, r, t, y, u, 0, 1])
+                                        listState.append(State(q, w, e, r, t, y, u, 0,
+                                                               1))
 
 # curState = listState[0]
 
@@ -177,8 +188,18 @@ for curState in listState:
                         x += 1
 
     winRatio = wins / testCount
-    data.append((curState, winRatio))
+    data.append(winRatio)
 
+with open('data.csv', 'w', newline='') as writeFile:
+    writer = csv.writer(writeFile)
+    writer.writerows(header)
+    i = 0
+    for stuff in myList:
+        writer.writerow(stuff + [data[i]])
+        i += 1
+
+# readFile.close()
+writeFile.close()
 
 print("Client Total: " + str(clientsTotal[0]))
 print("firewall: " + str(firewall[0]))
@@ -192,5 +213,3 @@ f = open("data.txt", "w")
 for info in data:
     f.write(str(info) + '\n')
 f.close()
-
-
